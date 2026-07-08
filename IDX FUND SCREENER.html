@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDX Fund Screener — 9 Mei 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Code+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:   #070b12;
+  --ink2:  #0c1520;
+  --ink3:  #111e2c;
+  --ink4:  #182435;
+  --line:  rgba(255,255,255,0.06);
+  --line2: rgba(255,255,255,0.10);
+  --amber: #e8a020;
+  --amber2:rgba(232,160,32,0.10);
+  --green: #00c474;
+  --green2:rgba(0,196,116,0.10);
+  --red:   #f03850;
+  --red2:  rgba(240,56,80,0.10);
+  --blue:  #3a8cef;
+  --blue2: rgba(58,140,239,0.10);
+  --cyan:  #20cce0;
+  --purple:#8060e8;
+  --text:  #bfcfdf;
+  --sub:   #7090a8;
+  --muted: #3a5060;
+  --white: #e8f0f8;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--ink);
+  color:var(--text);
+  font-family:'Source Code Pro',monospace;
+  font-size:12.5px;
+  line-height:1.6;
+}
+
+/* ══ MASTHEAD ══ */
+.masthead{
+  background:var(--ink2);
+  border-bottom:1px solid var(--line2);
+  padding:16px 32px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  position:sticky;top:0;z-index:200;
+}
+.mast-left{}
+.mast-brand{
+  font-family:'DM Serif Display',serif;
+  font-size:20px;
+  color:var(--white);
+  letter-spacing:0.5px;
+  line-height:1;
+}
+.mast-brand span{color:var(--amber)}
+.mast-sub{font-size:9px;letter-spacing:2.5px;color:var(--muted);text-transform:uppercase;margin-top:3px}
+.mast-right{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.mast-ticker{text-align:center}
+.mt-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.mt-val{font-size:16px;font-weight:700;margin-top:1px}
+.mt-chg{font-size:10px;margin-top:1px}
+.mast-div{width:1px;height:32px;background:var(--line2)}
+.alert-strip{
+  background:var(--red2);
+  border:1px solid rgba(240,56,80,0.25);
+  color:var(--red);
+  font-size:9px;
+  letter-spacing:1.5px;
+  padding:4px 12px;
+  text-transform:uppercase;
+  font-weight:600;
+}
+
+/* ══ CONTENT SHELL ══ */
+.shell{max-width:1280px;margin:0 auto;padding:28px 32px 80px}
+
+/* ══ SECTION TITLE ══ */
+.sec-title{
+  font-family:'DM Serif Display',serif;
+  font-size:13px;
+  font-style:italic;
+  color:var(--sub);
+  letter-spacing:1px;
+  text-transform:uppercase;
+  margin-bottom:14px;
+  display:flex;align-items:center;gap:12px;
+}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--line)}
+
+/* ══ GLOBAL MACRO GRID ══ */
+.macro-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:12px;
+  margin-bottom:32px;
+}
+.macro-card{
+  background:var(--ink2);
+  border:1px solid var(--line2);
+  border-radius:3px;
+  overflow:hidden;
+}
+.mc-head{
+  padding:10px 14px 8px;
+  border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.mc-entity{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)}
+.mc-status{font-size:8px;font-weight:700;padding:2px 8px;border-radius:1px;letter-spacing:1px}
+.st-watch{background:rgba(232,160,32,0.15);border:1px solid rgba(232,160,32,0.3);color:var(--amber)}
+.st-danger{background:var(--red2);border:1px solid rgba(240,56,80,0.3);color:var(--red)}
+.st-hold{background:var(--blue2);border:1px solid rgba(58,140,239,0.3);color:var(--blue)}
+.st-ok{background:var(--green2);border:1px solid rgba(0,196,116,0.3);color:var(--green)}
+.mc-body{padding:12px 14px}
+.mc-headline{
+  font-family:'DM Serif Display',serif;
+  font-size:15px;
+  color:var(--white);
+  line-height:1.3;
+  margin-bottom:8px;
+}
+.mc-detail{font-size:11px;color:var(--sub);line-height:1.6;margin-bottom:8px}
+.mc-impact{
+  background:var(--ink3);
+  border-left:2px solid var(--amber);
+  padding:6px 10px;
+  font-size:10px;
+  color:var(--text);
+  line-height:1.5;
+}
+.mc-impact.danger{border-color:var(--red)}
+.mc-impact.positive{border-color:var(--green)}
+.mc-source{font-size:9px;color:var(--muted);margin-top:6px;font-style:italic}
+.mc-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.mctag{
+  font-size:8px;padding:1px 6px;border-radius:1px;
+  letter-spacing:0.5px;font-weight:600;
+}
+.mctag-r{background:var(--red2);border:1px solid rgba(240,56,80,0.2);color:var(--red)}
+.mctag-a{background:var(--amber2);border:1px solid rgba(232,160,32,0.2);color:var(--amber)}
+.mctag-g{background:var(--green2);border:1px solid rgba(0,196,116,0.2);color:var(--green)}
+.mctag-b{background:var(--blue2);border:1px solid rgba(58,140,239,0.2);color:var(--blue)}
+
+/* Impact Matrix */
+.impact-matrix{
+  background:var(--ink2);
+  border:1px solid var(--line2);
+  border-radius:3px;
+  margin-bottom:32px;
+  overflow:hidden;
+}
+.im-head{
+  padding:12px 18px;
+  background:var(--ink3);
+  border-bottom:1px solid var(--line);
+  font-family:'DM Serif Display',serif;
+  font-size:13px;
+  font-style:italic;
+  color:var(--sub);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.impact-table{width:100%;border-collapse:collapse}
+.impact-table th{
+  padding:8px 14px;
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);background:var(--ink3);
+  border-bottom:1px solid var(--line2);
+  text-align:left;white-space:nowrap;
+}
+.impact-table td{
+  padding:9px 14px;
+  border-bottom:1px solid var(--line);
+  font-size:11px;vertical-align:top;
+}
+.impact-table tr:last-child td{border-bottom:none}
+.impact-table tr:hover td{background:rgba(255,255,255,0.015)}
+.factor-name{color:var(--white);font-weight:600;white-space:nowrap}
+.impact-positive{color:var(--green)}
+.impact-negative{color:var(--red)}
+.impact-neutral{color:var(--amber)}
+.impact-dot{
+  width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:middle;
+}
+.dot-r{background:var(--red)}
+.dot-g{background:var(--green)}
+.dot-a{background:var(--amber)}
+
+/* ══ MARKET STRIP ══ */
+.strip{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:0;
+  background:var(--line);
+  border:1px solid var(--line2);
+  border-radius:3px;
+  overflow:hidden;
+  margin-bottom:24px;
+}
+.strip-item{
+  background:var(--ink2);
+  padding:11px 14px;
+  border-right:1px solid var(--line);
+}
+.strip-item:last-child{border-right:none}
+.si-label{font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:3px}
+.si-val{font-size:15px;font-weight:700}
+.si-chg{font-size:10px;margin-top:1px}
+.up{color:var(--green)}.dn{color:var(--red)}.wa{color:var(--amber)}.fl{color:var(--muted)}
+
+/* ══ WARN BOX ══ */
+.warn-box{
+  border:1px solid rgba(240,56,80,0.2);
+  border-left:3px solid var(--red);
+  background:rgba(240,56,80,0.04);
+  padding:12px 16px;
+  margin-bottom:24px;
+  border-radius:0 3px 3px 0;
+  font-size:11px;
+  color:var(--sub);
+  line-height:1.7;
+}
+.wb-title{color:var(--red);font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:5px}
+
+/* ══ REBALANCING ══ */
+.rb{
+  background:var(--ink2);
+  border:1px solid var(--line2);
+  border-radius:3px;
+  padding:16px 18px;
+  margin-bottom:32px;
+}
+.rb-title{font-family:'DM Serif Display',serif;font-size:13px;font-style:italic;color:var(--sub);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.rb-title::after{content:'';flex:1;height:1px;background:var(--line)}
+.rb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.rbc-title{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid var(--line)}
+.bw{display:flex;flex-wrap:wrap;gap:3px}
+.b{display:inline-block;font-size:8px;font-weight:700;padding:2px 6px;border-radius:1px;letter-spacing:0.5px}
+.b-in{background:var(--green2);border:1px solid rgba(0,196,116,0.25);color:var(--green)}
+.b-out{background:var(--red2);border:1px solid rgba(240,56,80,0.2);color:var(--red)}
+.b-note{font-size:10px;color:var(--muted);margin-top:5px;font-style:italic;line-height:1.4}
+
+/* ══ TIER DIVIDER ══ */
+.tier-div{
+  display:flex;align-items:center;gap:12px;
+  margin:28px 0 12px;
+}
+.td-tag{
+  font-family:'Source Code Pro',monospace;
+  font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  padding:4px 12px;border-radius:1px;white-space:nowrap;
+}
+.t1x{background:rgba(232,160,32,0.1);border:1px solid rgba(232,160,32,0.25);color:var(--amber)}
+.t2x{background:var(--blue2);border:1px solid rgba(58,140,239,0.25);color:var(--blue)}
+.t3x{background:rgba(0,196,116,0.08);border:1px solid rgba(0,196,116,0.2);color:var(--green)}
+.t4x{background:rgba(128,96,232,0.1);border:1px solid rgba(128,96,232,0.25);color:var(--purple)}
+.t5x{background:rgba(32,204,224,0.08);border:1px solid rgba(32,204,224,0.2);color:var(--cyan)}
+.td-line{flex:1;height:1px;background:var(--line)}
+.td-info{font-size:9px;color:var(--muted);white-space:nowrap}
+
+/* ══ STOCK CARD ══ */
+.sc{
+  background:var(--ink2);
+  border:1px solid var(--line2);
+  border-radius:3px;
+  margin-bottom:8px;
+  overflow:hidden;
+}
+.sc.t1s{border-left:2px solid var(--amber)}
+.sc.t2s{border-left:2px solid var(--blue)}
+.sc.t3s{border-left:2px solid var(--green)}
+.sc.t4s{border-left:2px solid var(--purple)}
+.sc.t5s{border-left:2px solid var(--cyan)}
+
+/* ══ CARD HEADER ══ */
+.sc-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 18px;
+  cursor:pointer;user-select:none;
+  flex-wrap:wrap;gap:10px;
+}
+.sc-head:hover{background:rgba(255,255,255,0.015)}
+.sch-left{display:flex;align-items:center;gap:14px}
+.sch-ticker{
+  font-family:'DM Serif Display',serif;
+  font-size:28px;line-height:1;
+}
+.c1{color:var(--amber)}.c2{color:var(--blue)}.c3{color:var(--green)}.c4{color:var(--purple)}.c5{color:var(--cyan)}
+.sch-meta{}
+.sch-name{font-size:11px;color:var(--sub);max-width:260px;line-height:1.4}
+.sch-tags{display:flex;flex-wrap:wrap;gap:3px;margin-top:4px}
+.itag{display:inline-block;font-size:7.5px;font-weight:700;padding:1px 6px;border-radius:1px;letter-spacing:0.5px}
+.it-new{background:var(--green2);border:1px solid rgba(0,196,116,0.25);color:var(--green)}
+.it-stay{background:rgba(255,255,255,0.04);border:1px solid var(--line);color:var(--muted)}
+
+.sch-right{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.price-b{text-align:right}
+.pb-src{font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.pb-val{font-size:22px;font-family:'DM Serif Display',serif;margin-top:1px}
+.pb-chg{font-size:10px;margin-top:1px}
+
+.score-ring{
+  width:50px;height:50px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:1.5px solid;flex-shrink:0;
+}
+.sr-s{border-color:var(--green);color:var(--green)}
+.sr-a{border-color:var(--cyan);color:var(--cyan)}
+.sr-b{border-color:var(--amber);color:var(--amber)}
+.sr-c{border-color:rgba(240,56,80,0.6);color:var(--red)}
+.sr-d{border-color:var(--muted);color:var(--muted)}
+.sr-num{font-family:'DM Serif Display',serif;font-size:16px;font-weight:400;line-height:1}
+.sr-lbl{font-size:6.5px;letter-spacing:1px;text-transform:uppercase;margin-top:1px}
+
+.rp{font-size:8.5px;font-weight:700;padding:4px 11px;border-radius:1px;letter-spacing:1px;white-space:nowrap}
+.rp-sb{background:var(--green2);border:1px solid rgba(0,196,116,0.3);color:var(--green)}
+.rp-b{background:var(--blue2);border:1px solid rgba(58,140,239,0.3);color:var(--blue)}
+.rp-n{background:rgba(255,255,255,0.04);border:1px solid var(--line2);color:var(--sub)}
+.rp-s{background:var(--red2);border:1px solid rgba(240,56,80,0.3);color:var(--red)}
+
+.chev{font-size:14px;color:var(--muted);transition:transform 0.25s;width:20px;text-align:center;flex-shrink:0}
+.chev.o{transform:rotate(180deg)}
+
+/* ══ CARD BODY ══ */
+.sc-body{display:none;border-top:1px solid var(--line)}
+.sc-body.open{display:block}
+
+/* ══ TAB NAV ══ */
+.tab-nav{
+  display:flex;overflow-x:auto;
+  background:var(--ink3);
+  border-bottom:1px solid var(--line);
+}
+.tn-btn{
+  padding:9px 16px;
+  font-family:'Source Code Pro',monospace;
+  font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);
+  cursor:pointer;border:none;background:none;
+  border-bottom:2px solid transparent;
+  white-space:nowrap;transition:color 0.15s,border-color 0.15s;
+}
+.tn-btn:hover{color:var(--text)}
+.tn-btn.act{color:var(--amber);border-bottom-color:var(--amber)}
+
+/* ══ TAB PANEL ══ */
+.tab-panel{display:none;padding:18px}
+.tab-panel.act{display:block}
+
+/* ══ DATA GRID ══ */
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.dc-title{
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;padding-bottom:4px;
+  border-bottom:1px solid var(--line);
+}
+.dr{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:3.5px 0;border-bottom:1px solid rgba(255,255,255,0.025);
+  gap:8px;font-size:11px;
+}
+.dr:last-child{border-bottom:none}
+.dk{color:var(--sub);flex-shrink:0}
+.dv{text-align:right;color:var(--text)}
+.dv.up{color:var(--green)}.dv.dn{color:var(--red)}.dv.wa{color:var(--amber)}
+
+/* ══ MOAT BAR ══ */
+.moat-wrap{display:flex;gap:2px;margin-top:3px}
+.m-seg{height:3px;border-radius:1px;flex:1}
+.m-on{background:var(--amber)}.m-off{background:var(--line2)}
+
+/* ══ SCORE BREAKDOWN ══ */
+.sb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.sb-item{background:var(--ink3);border:1px solid var(--line);padding:10px 12px;border-radius:2px}
+.sb-ttl{font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.sb-row{display:flex;justify-content:space-between;align-items:baseline}
+.sb-val{font-family:'DM Serif Display',serif;font-size:20px}
+.sb-mx{font-size:9px;color:var(--muted)}
+.sb-bar{height:2px;background:var(--line2);border-radius:1px;margin-top:5px;overflow:hidden}
+.sb-fill{height:100%;border-radius:1px}
+
+/* ══ CATALYST LIST ══ */
+.cat-list{display:flex;flex-direction:column;gap:6px}
+.cat-item{
+  display:flex;gap:10px;align-items:flex-start;
+  background:var(--ink3);border:1px solid var(--line);
+  padding:8px 12px;border-radius:2px;
+  font-size:11px;color:var(--sub);line-height:1.55;
+}
+.ci-icon{flex-shrink:0;color:var(--cyan);margin-top:1px;font-size:11px}
+.cbadge{display:inline-block;font-size:7.5px;font-weight:700;padding:1px 5px;border-radius:1px;margin-right:5px;vertical-align:middle}
+.cb-main{background:var(--green2);border:1px solid rgba(0,196,116,0.25);color:var(--green)}
+.cb-risk{background:var(--red2);border:1px solid rgba(240,56,80,0.2);color:var(--red)}
+.cb-alpha{background:var(--amber2);border:1px solid rgba(232,160,32,0.25);color:var(--amber)}
+.cb-global{background:var(--blue2);border:1px solid rgba(58,140,239,0.2);color:var(--blue)}
+
+/* ══ SMART MONEY ══ */
+.sm-list{display:flex;flex-direction:column;gap:5px}
+.sm-item{
+  display:flex;align-items:center;gap:9px;
+  padding:6px 10px;border-radius:2px;
+  background:var(--ink3);
+  font-size:11px;color:var(--sub);
+}
+.sm-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sd-on{background:var(--green);box-shadow:0 0 5px rgba(0,196,116,0.4)}
+.sd-half{background:var(--amber)}
+.sd-off{background:var(--muted)}
+.sig-bar{display:flex;gap:3px;margin-top:5px}
+.sig-seg{height:3px;border-radius:1px;flex:1}
+.sig-on{background:var(--green)}.sig-off{background:var(--line2)}
+
+/* ══ SETUP PANEL ══ */
+.setup-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:10px;background:var(--ink3);padding:14px;border-radius:2px;margin-bottom:12px;
+}
+.sg-k{font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.sg-v{font-family:'DM Serif Display',serif;font-size:16px}
+.sg-entry{color:var(--cyan)}.sg-sl{color:var(--red)}.sg-tp{color:var(--green)}.sg-rr{color:var(--amber)}
+.sg-note{font-size:10px;color:var(--sub)}
+.rr-track{height:3px;background:var(--line2);border-radius:2px;margin-top:4px;overflow:hidden}
+.rr-fill{height:100%;border-radius:2px}
+
+.verdict{
+  background:var(--ink3);border:1px solid var(--line);
+  padding:12px 14px;border-radius:2px;
+  display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;
+}
+.v-lbl{font-size:7.5px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);flex-shrink:0;padding-top:2px}
+.v-txt{font-size:11px;color:var(--sub);flex:1;line-height:1.65;min-width:200px}
+.risk-tag{font-size:8px;font-weight:700;padding:3px 9px;border-radius:1px;letter-spacing:1px;white-space:nowrap}
+.rt-l{background:var(--green2);border:1px solid rgba(0,196,116,0.25);color:var(--green)}
+.rt-m{background:var(--amber2);border:1px solid rgba(232,160,32,0.25);color:var(--amber)}
+.rt-h{background:var(--red2);border:1px solid rgba(240,56,80,0.25);color:var(--red)}
+.rt-n{background:var(--ink4);border:1px solid var(--line2);color:var(--muted)}
+
+/* ══ FOOTER ══ */
+.foot{
+  border-top:1px solid var(--line);
+  padding:16px 32px;
+  font-size:9px;color:var(--muted);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  letter-spacing:0.5px;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ MASTHEAD ══ -->
+<div class="masthead">
+  <div class="mast-left">
+    <div class="mast-brand">IDX <span>Fund</span> Screener</div>
+    <div class="mast-sub">Institutional Research · Internal Only · 9 Mei 2026</div>
+  </div>
+  <div class="mast-right">
+    <div class="mast-ticker">
+      <div class="mt-label">IHSG Close</div>
+      <div class="mt-val dn">6.969</div>
+      <div class="mt-chg dn">▼ -204.93 · -2.86%</div>
+    </div>
+    <div class="mast-div"></div>
+    <div class="mast-ticker">
+      <div class="mt-label">USD/IDR</div>
+      <div class="mt-val wa">17.300</div>
+      <div class="mt-chg wa">Tertekan</div>
+    </div>
+    <div class="mast-div"></div>
+    <div class="mast-ticker">
+      <div class="mt-label">Brent Oil</div>
+      <div class="mt-val wa">$108</div>
+      <div class="mt-chg wa">US-Iran fragile</div>
+    </div>
+    <div class="mast-div"></div>
+    <div class="mast-ticker">
+      <div class="mt-label">Harga Emas</div>
+      <div class="mt-val up">ATH 2026</div>
+      <div class="mt-chg up">Geopolitik</div>
+    </div>
+    <div class="alert-strip">⚠ RED DAY — TUNDA ENTRY BARU</div>
+  </div>
+</div>
+
+<div class="shell">
+
+<!-- ══ MARKET STRIP ══ -->
+<div class="strip">
+  <div class="strip-item"><div class="si-label">IHSG (9 Mei Close)</div><div class="si-val dn">6.969,40</div><div class="si-chg dn">▼ -2.86% | Sumber: Stockbit 16:14 WIB</div></div>
+  <div class="strip-item"><div class="si-label">PDB Q1 2026</div><div class="si-val up">+5.61%</div><div class="si-chg up">YoY | Beat estimasi</div></div>
+  <div class="strip-item"><div class="si-label">Fed Rate (29 Apr)</div><div class="si-val wa">3.50–3.75%</div><div class="si-chg fl">Hold | Sumber: Fed.gov</div></div>
+  <div class="strip-item"><div class="si-label">BOJ Rate (Apr 2026)</div><div class="si-val wa">0.75%</div><div class="si-chg wa">Hold (hawkish) | CNBC</div></div>
+  <div class="strip-item"><div class="si-label">Brent Crude</div><div class="si-val wa">~$108/bbl</div><div class="si-chg wa">US-Iran stalemate</div></div>
+  <div class="strip-item"><div class="si-label">MSCI EM Indonesia</div><div class="si-val dn">FROZEN</div><div class="si-chg dn">Review Juni 2026</div></div>
+  <div class="strip-item"><div class="si-label">Spec Desk</div><div class="si-val dn">SUSPENDED</div><div class="si-chg dn">IHSG -2.86%</div></div>
+</div>
+
+<!-- ══ WARN BOX ══ -->
+<div class="warn-box">
+  <div class="wb-title">🔴 Market Alert — Red Day Severe | Sumber: Stockbit Real-Time, 9 Mei 2026</div>
+  IHSG ditutup di 6.969 (-2.86%) — hampir semua konstituen indeks baru dalam zona merah: DEWA -7.96%, ANTM -6.44%, HRTA -5.92%, CUAN -5.88%, BRPT -5.09%, WIFI -4.17%. Hanya ESSA yang bertahan hijau (+1.21%). <strong style="color:var(--red)">Tidak ada entry baru hari ini.</strong> Semua posisi baru menunggu IHSG konfirmasi reversal minimal 2 sesi berturut. Spec Desk suspended total.
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     GLOBAL MACRO INTELLIGENCE
+══════════════════════════════════════════════════════════ -->
+<div class="sec-title">Global Macro Intelligence — Dampak terhadap IDX</div>
+
+<div class="macro-grid">
+
+  <!-- US-IRAN WAR -->
+  <div class="macro-card">
+    <div class="mc-head">
+      <div class="mc-entity">Geopolitik Global</div>
+      <div class="mc-status st-danger">HIGH RISK</div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-headline">Perang AS-Israel vs Iran — Gencatan Senjata Rapuh</div>
+      <div class="mc-detail">AS + Israel melancarkan serangan ke Iran 28 Feb 2026. Gencatan senjata diarranged Pakistan 8 April — namun fragile. Selat Hormuz sebagian besar masih tersumbat, AS lakukan blockade kapal Iran. Iran kirim proposal baru 8 Mei — Trump: "Tidak puas." Brent crude ~$108, WTI ~$101. Kapal tanker Iran ditembak 8 Mei 2026.</div>
+      <div class="mc-impact danger">↳ IDX: Minyak tinggi = inflasi impor naik, rupiah tertekan, daya beli konsumen turun. Tapi positif untuk ESSA (gas/amonia), ADMR (batu bara), ANTM (emas). Risiko: jika ceasefire deal ↔ minyak bisa drop 20%+.</div>
+      <div class="mc-source">Sumber: CNBC 1 & 8 Mei 2026 | Wikipedia US-Iran ceasefire 2026 | UK Parliament Library</div>
+      <div class="mc-tags">
+        <span class="mctag mctag-r">Hormuz Blockade</span>
+        <span class="mctag mctag-r">Oil $108 Elevated</span>
+        <span class="mctag mctag-a">Ceasefire Fragile</span>
+        <span class="mctag mctag-g">ESSA Beneficiary</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MSCI -->
+  <div class="macro-card">
+    <div class="mc-head">
+      <div class="mc-entity">MSCI · May 2026 Review</div>
+      <div class="mc-status st-danger">FREEZE AKTIF</div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-headline">MSCI Bekukan Semua Penyesuaian Positif Indonesia</div>
+      <div class="mc-detail">MSCI mempertahankan semua restriksi di May 2026 Index Review: (1) Freeze Foreign Inclusion Factors, (2) Blokir penambahan konstituen baru, (3) Stop upgrade antar segmen. HSC stocks (konsentrasi tinggi) — BREN, DSSA — disingkirkan. Update berikutnya: Juni 2026 Market Accessibility Review. Jika Indonesia gagal reform: downgrade dari Emerging ke Frontier Market.</div>
+      <div class="mc-impact danger">↳ IDX: Potensi outflow $270M jika BREN+DSSA dikeluarkan (Gotrade/Bloomberg). Goldman Sachs estimasi $7.8B outflow jika downgrade ke Frontier. MSCI freeze = TIDAK ADA foreign passive inflow baru. Market bergantung sepenuhnya pada sentimen domestik.</div>
+      <div class="mc-source">Sumber: Jakarta Globe, Bloomberg 20 Apr 2026 | Gotrade News | BEI respons keterbukaan</div>
+      <div class="mc-tags">
+        <span class="mctag mctag-r">$270M Outflow Risk</span>
+        <span class="mctag mctag-r">Frontier Risk Jun 2026</span>
+        <span class="mctag mctag-a">BEI Reform Ongoing</span>
+        <span class="mctag mctag-b">Jun 2026 Update</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOODY'S + FITCH -->
+  <div class="macro-card">
+    <div class="mc-head">
+      <div class="mc-entity">Moody's &amp; Fitch · Sovereign Rating</div>
+      <div class="mc-status st-danger">NEGATIVE OUTLOOK</div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-headline">Dua Lembaga Rating Ubah Outlook Indonesia ke Negatif</div>
+      <div class="mc-detail"><strong>Moody's (Feb 2026):</strong> Pertahankan Baa2 — outlook STABLE → NEGATIVE. Alasan: "Berkurangnya prediktabilitas kebijakan, risiko efektivitas kebijakan, lemahnya governance." Kutuk ketidakpastian Danantara. <strong>Fitch (Mar 4, 2026):</strong> Pertahankan BBB — outlook STABLE → NEGATIVE. Alasan: "Ketidakpastian kebijakan, erosi kredibilitas policy mix." Defisit fiskal 2.9% vs target 2.7% — mendekati batas legal 3%. S&P belum bergerak.</div>
+      <div class="mc-impact danger">↳ IDX: Institutional mandates banyak yang tidak bisa tambah exposure ke negara dengan outlook negatif. Biaya hutang korporasi naik. Moody's juga cut outlook TLKM, ICBP, UNTR. Jika downgrade satu notch: Indonesia jadi BB+ (junk) → outflow massive dari bond + equity global funds.</div>
+      <div class="mc-source">Sumber: Indonesia Business Post, IFR / Reuters 4 Mar 2026 | MarketScreener</div>
+      <div class="mc-tags">
+        <span class="mctag mctag-r">Moody's Baa2 Negative</span>
+        <span class="mctag mctag-r">Fitch BBB Negative</span>
+        <span class="mctag mctag-a">Junk Risk — 1 Notch</span>
+        <span class="mctag mctag-b">S&amp;P Belum Review</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOJ + YEN CARRY TRADE -->
+  <div class="macro-card">
+    <div class="mc-head">
+      <div class="mc-entity">Bank of Japan · Rate Decision</div>
+      <div class="mc-status st-watch">HAWKISH HOLD</div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-headline">BOJ Hold 0.75% — Tiga Member Mau Naik ke 1.0%</div>
+      <div class="mc-detail">BOJ pertahankan rate 0.75% di April 2026 (6-3 vote). Tiga dissenters mau hike ke 1.0%. FY2026 CPI forecast dinaikkan ke 2.8% dari 1.9% (karena minyak). Pertumbuhan dipangkas ke 0.5% dari 1.0%. Yen di ~159/USD. Stagflation ringan dikhawatirkan. JGB 10-year yield di level tertinggi ~30 tahun (2.5%). JPMorgan: BOJ kemungkinan hike H2 2026 — USD carry trade semakin mahal.</div>
+      <div class="mc-impact danger">↳ IDX: Morgan Stanley estimasi $500B yen carry positions masih outstanding. Jika BOJ hike lagi, carry trade unwind → capital keluar dari EM termasuk Indonesia. Rupiah sudah di 17.300 — rentan. Setiap statement hawkish BOJ = risiko tambahan net foreign sell di IDX.</div>
+      <div class="mc-source">Sumber: CNBC 28 Apr 2026 | Trading Economics 7 Mei 2026 | Investing.com carry trade analysis</div>
+      <div class="mc-tags">
+        <span class="mctag mctag-r">Carry Trade $500B Risk</span>
+        <span class="mctag mctag-a">BOJ Next Hike H2 2026?</span>
+        <span class="mctag mctag-r">JPY 159 — Tertekan</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FED -->
+  <div class="macro-card">
+    <div class="mc-head">
+      <div class="mc-entity">US Federal Reserve · Apr 29, 2026</div>
+      <div class="mc-status st-hold">HOLD 3.50–3.75%</div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-headline">Fed Hold — Tidak Ada Rate Cut Sampai 2027, Dollar Kuat</div>
+      <div class="mc-detail">Fed vote 11-1 untuk hold di 3.50-3.75% (29 Apr 2026). Miran voting untuk cut, tapi 3 member lain justru anti-easing. Alasan: energi tinggi → inflasi elevated. J.P. Morgan Global Research forecast: Fed hold sepanjang 2026, hike 25bp di Q3 2027. Powell term ends soon — Kevin Warsh nominated. DOJ/Trump pressure ke Fed meningkatkan ketidakpastian institusional.</div>
+      <div class="mc-impact danger">↳ IDX: Dollar kuat (Fed hold) = rupiah tertekan → double pain bagi investor asing di Indonesia (loss dari aset + loss dari kurs). Selama Fed tidak cut, EM outflow akan terus. Satu-satunya skenario positif: Fed cut mendadak jika US resesi.</div>
+      <div class="mc-source">Sumber: Federal Reserve Press Release 29 Apr 2026 | J.P. Morgan Global Research | Fox Business</div>
+      <div class="mc-tags">
+        <span class="mctag mctag-r">USD Strong — EM Outflow</span>
+        <span class="mctag mctag-a">No Cut Until 2027</span>
+        <span class="mctag mctag-b">Powell Exit — Ketidakpastian</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FTSE Russell -->
+  <div class="macro-card">
+    <div class="mc-head">
+      <div class="mc-entity">FTSE Russell · Indonesia Review</div>
+      <div class="mc-status st-watch">POSTPONED</div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-headline">FTSE Russell Tunda Review Indonesia — Kekhawatiran Free Float</div>
+      <div class="mc-detail">FTSE Russell menunda review Indonesia Februari 2026, memflag kekhawatiran serupa dengan MSCI soal free float dan transparansi kepemilikan. Update dijanjikan sebelum global review Mei 2026. Dana pasif yang tracking FTSE EM Index juga tidak bisa tambah exposure Indonesia selama review berlangsung. Ini memperburuk situasi passive inflow yang sudah buntu di MSCI.</div>
+      <div class="mc-impact danger">↳ IDX: Kombinasi MSCI freeze + FTSE Russell postponed = dua jalur utama passive inflow global tersumbat bersamaan. Satu-satunya passive inflow yang masih berjalan adalah dari BEI index rebalancing (IDX30/LQ45/IDX80) yang bersifat domestik.</div>
+      <div class="mc-source">Sumber: MarketScreener / Reuters 4 Mar 2026 | Jakarta Globe</div>
+      <div class="mc-tags">
+        <span class="mctag mctag-r">FTSE EM Freeze</span>
+        <span class="mctag mctag-a">Only BEI Domestic Inflow Active</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ IMPACT MATRIX ══ -->
+<div class="impact-matrix">
+  <div class="im-head">
+    <span>Impact Matrix — Global Factors vs IDX Stocks</span>
+    <span style="font-family:'Source Code Pro',monospace;font-size:9px;color:var(--muted)">Relevansi terhadap screener kita</span>
+  </div>
+  <table class="impact-table">
+    <thead>
+      <tr>
+        <th>Faktor Global</th>
+        <th>Kondisi Saat Ini</th>
+        <th>Dampak ke IDX</th>
+        <th>Saham Diuntungkan</th>
+        <th>Saham Dirugikan</th>
+        <th>Urgensi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="factor-name">US-Iran War / Minyak $108</span></td>
+        <td class="impact-negative"><span class="impact-dot dot-r"></span>Ceasefire fragile, Hormuz belum buka</td>
+        <td class="impact-negative">Inflasi impor, rupiah tertekan</td>
+        <td class="impact-positive">ESSA, ADMR, ANTM</td>
+        <td class="impact-negative">BBRI/BMRI (NPL), Airlines, Consumer</td>
+        <td><span class="mctag mctag-r">TINGGI</span></td>
+      </tr>
+      <tr>
+        <td><span class="factor-name">MSCI Freeze + HSC Removal</span></td>
+        <td class="impact-negative"><span class="impact-dot dot-r"></span>Freeze aktif, BREN/DSSA akan dikeluarkan</td>
+        <td class="impact-negative">No passive foreign inflow, $270M outflow risk</td>
+        <td class="impact-positive">Saham HSC rendah: BBRI, BMRI, ADMR, ESSA</td>
+        <td class="impact-negative">BREN, DSSA — sudah dikeluarkan dari LQ45</td>
+        <td><span class="mctag mctag-r">KRITIS</span></td>
+      </tr>
+      <tr>
+        <td><span class="factor-name">Moody's + Fitch Negative Outlook</span></td>
+        <td class="impact-negative"><span class="impact-dot dot-r"></span>Keduanya negative sejak Feb-Mar 2026</td>
+        <td class="impact-negative">Institutional mandates tidak bisa tambah Indonesia</td>
+        <td class="impact-neutral">—</td>
+        <td class="impact-negative">Semua saham EM terekspos</td>
+        <td><span class="mctag mctag-a">SEDANG</span></td>
+      </tr>
+      <tr>
+        <td><span class="factor-name">BOJ Hawkish — Carry Trade Unwind</span></td>
+        <td class="impact-negative"><span class="impact-dot dot-a"></span>0.75%, 3 member mau hike ke 1.0%</td>
+        <td class="impact-negative">Jika yen menguat, EM capital keluar termasuk IDX</td>
+        <td class="impact-positive">Tidak ada — semua EM dirugikan</td>
+        <td class="impact-negative">Semua saham — terutama yang foreign held tinggi</td>
+        <td><span class="mctag mctag-a">SEDANG</span></td>
+      </tr>
+      <tr>
+        <td><span class="factor-name">Fed Hold — Dollar Kuat</span></td>
+        <td class="impact-negative"><span class="impact-dot dot-r"></span>3.50–3.75%, no cut 2026</td>
+        <td class="impact-negative">Rupiah tertekan → double loss bagi investor asing</td>
+        <td class="impact-positive">Komoditas (USD revenue): ADMR, ADRO, ANTM</td>
+        <td class="impact-negative">Importir, consumer, hutang USD</td>
+        <td><span class="mctag mctag-r">TINGGI</span></td>
+      </tr>
+      <tr>
+        <td><span class="factor-name">BEI Rebalancing (Domestik)</span></td>
+        <td class="impact-positive"><span class="impact-dot dot-g"></span>Efektif 4 Mei – 31 Jul 2026</td>
+        <td class="impact-positive">Passive inflow DOMESTIK ke konstituen baru</td>
+        <td class="impact-positive">ADMR (IDX30), ESSA+DEWA+HRTA+WIFI (LQ45), TPIA+GGRM (IDX80)</td>
+        <td class="impact-negative">ISAT (keluar IDX30), BREN, DSSA</td>
+        <td><span class="mctag mctag-g">OPPORTUNITY</span></td>
+      </tr>
+      <tr>
+        <td><span class="factor-name">PDB Q1 2026 +5.61% YoY</span></td>
+        <td class="impact-positive"><span class="impact-dot dot-g"></span>Beat estimasi, terkuat sejak 2022</td>
+        <td class="impact-positive">Fundamental RI masih solid, kredit bisa ekspansi</td>
+        <td class="impact-positive">BBRI, BMRI (kredit UMKM/korporasi)</td>
+        <td class="impact-neutral">—</td>
+        <td><span class="mctag mctag-g">POSITIF</span></td>
+      </tr>
+      <tr>
+        <td><span class="factor-name">Harga Emas Global ATH 2026</span></td>
+        <td class="impact-positive"><span class="impact-dot dot-g"></span>All-time high driven geopolitik</td>
+        <td class="impact-positive">ANTM, HRTA langsung diuntungkan</td>
+        <td class="impact-positive">ANTM, HRTA</td>
+        <td class="impact-neutral">—</td>
+        <td><span class="mctag mctag-g">POSITIF</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══ REBALANCING ══ -->
+<div class="rb">
+  <div class="rb-title">Rebalancing BEI — Satu-satunya Passive Inflow Aktif | Efektif 4 Mei – 31 Jul 2026</div>
+  <div class="rb-grid">
+    <div>
+      <div class="rbc-title">IDX30 — Perubahan</div>
+      <div class="bw"><span class="b b-in">↑ ADMR (Masuk)</span><span class="b b-out">↓ ISAT (Keluar)</span></div>
+      <div class="b-note">Sumber: BEI via Bisnis.com 24 Apr 2026</div>
+    </div>
+    <div>
+      <div class="rbc-title">LQ45 — 5 Masuk / 5 Keluar</div>
+      <div class="bw"><span class="b b-in">↑ CUAN</span><span class="b b-in">↑ DEWA</span><span class="b b-in">↑ ESSA</span><span class="b b-in">↑ HRTA</span><span class="b b-in">↑ WIFI</span></div>
+      <div class="bw" style="margin-top:3px"><span class="b b-out">↓ BREN</span><span class="b b-out">↓ CTRA</span><span class="b b-out">↓ DSSA</span><span class="b b-out">↓ HEAL</span><span class="b b-out">↓ NCKL</span></div>
+      <div class="b-note">Kriteria HSC — saham konsentrasi tinggi disingkirkan</div>
+    </div>
+    <div>
+      <div class="rbc-title">IDX80 — 5 Masuk / 5 Keluar</div>
+      <div class="bw"><span class="b b-in">↑ BKSL</span><span class="b b-in">↑ CBDK</span><span class="b b-in">↑ DEWA</span><span class="b b-in">↑ GGRM</span><span class="b b-in">↑ TPIA</span></div>
+      <div class="bw" style="margin-top:3px"><span class="b b-out">↓ BREN</span><span class="b b-out">↓ BTPS</span><span class="b b-out">↓ DSSA</span><span class="b b-out">↓ MTEL</span><span class="b b-out">↓ NCKL</span></div>
+    </div>
+    <div>
+      <div class="rbc-title">Catatan Kritis</div>
+      <div class="b-note">MSCI freeze + FTSE postponed = global passive inflow buntu. BEI rebalancing adalah SATU-SATUNYA passive inflow yang masih aktif. Ini mengubah skala thesis index arbitrage dari sebelumnya. Saham baru masuk IDX harus didukung fundamental, bukan hanya berharap arus dana besar dari luar.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TIER 1 — BLUE CHIP ANCHOR
+════════════════════════════════════════════════ -->
+<div class="tier-div">
+  <span class="td-tag t1x">Tier 1</span>
+  <div class="td-line"></div>
+  <span class="td-info">Blue Chip Anchor · Target 10–30% · Risiko Rendah · Hold Core</span>
+</div>
+
+<!-- ─── BMRI ─── -->
+<div class="sc t1s">
+  <div class="sc-head" onclick="tog('bmri')">
+    <div class="sch-left">
+      <div class="sch-ticker c1">BMRI</div>
+      <div class="sch-meta">
+        <div class="sch-name">PT Bank Mandiri (Persero) Tbk · Perbankan BUMN</div>
+        <div class="sch-tags">
+          <span class="itag it-stay">IDX30 ✓ Core</span>
+          <span class="itag it-stay">LQ45 ✓ Core</span>
+          <span class="itag it-stay">MSCI EM ✓ Low HSC</span>
+          <span class="itag it-stay">Dividen Jumbo 2026</span>
+        </div>
+      </div>
+    </div>
+    <div class="sch-right">
+      <div class="price-b">
+        <div class="pb-src">Stockbit · 9 Mei 2026</div>
+        <div class="pb-val dn">Rp 4.630</div>
+        <div class="pb-chg dn">▼ -10 (-0.22%) — Paling Defensif Hari Ini</div>
+      </div>
+      <div class="score-ring sr-b"><div class="sr-num">74</div><div class="sr-lbl">Score</div></div>
+      <span class="rp rp-b">BUY</span>
+      <span class="chev" id="c-bmri">▾</span>
+    </div>
+  </div>
+  <div class="sc-body" id="b-bmri">
+    <div class="tab-nav">
+      <button class="tn-btn act" onclick="sw('bmri','f',this)">Fundamental</button>
+      <button class="tn-btn" onclick="sw('bmri','k',this)">Katalis</button>
+      <button class="tn-btn" onclick="sw('bmri','sm',this)">Smart Money</button>
+      <button class="tn-btn" onclick="sw('bmri','r',this)">Risiko</button>
+      <button class="tn-btn" onclick="sw('bmri','s',this)">Setup</button>
+    </div>
+    <div class="tab-panel act" id="bmri-f">
+      <div class="dg">
+        <div>
+          <div class="dc-title">Goldman Sachs — Fundamental</div>
+          <div class="dr"><span class="dk">Harga Penutupan</span><span class="dv dn">Rp 4.630 | 9 Mei 2026 · Stockbit</span></div>
+          <div class="dr"><span class="dk">PE Ratio (est.)</span><span class="dv">~9–10x — Di bawah sektor</span></div>
+          <div class="dr"><span class="dk">ROE</span><span class="dv up">>18% — Excellent</span></div>
+          <div class="dr"><span class="dk">Dividen 2026</span><span class="dv up">Rp44,47T — Yield ~5–6% | Ajaib Mei 2026</span></div>
+          <div class="dr"><span class="dk">Buyback</span><span class="dv up">Rencana buyback saham jumbo | Ajaib Mei 2026</span></div>
+          <div class="dr"><span class="dk">Moody's Outlook</span><span class="dv wa">Baa2 Negative — Pantau TLKM/ICBP juga</span></div>
+          <div class="dr"><span class="dk">Competitive Moat</span><span class="dv wa">Kuat</span></div>
+          <div class="moat-wrap"><div class="m-seg m-on"></div><div class="m-seg m-on"></div><div class="m-seg m-on"></div><div class="m-seg m-on"></div><div class="m-seg m-off"></div></div>
+          <div class="dr" style="margin-top:8px"><span class="dk">Bull Target 12M</span><span class="dv up">Rp 5.500–6.000 (+25%)</span></div>
+          <div class="dr"><span class="dk">Bear Target 12M</span><span class="dv dn">Rp 3.800 (-18%) jika rating di-downgrade</span></div>
+        </div>
+        <div>
+          <div class="dc-title">Skor Breakdown (74/100)</div>
+          <div class="sb-grid">
+            <div class="sb-item"><div class="sb-ttl">Fundamental</div><div class="sb-row"><div class="sb-val up">19</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:95%;background:var(--green)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Katalis</div><div class="sb-row"><div class="sb-val wa">15</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:75%;background:var(--amber)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Smart Money</div><div class="sb-row"><div class="sb-val wa">14</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:70%;background:var(--amber)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Index/Flow</div><div class="sb-row"><div class="sb-val wa">14</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:70%;background:var(--amber)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Teknikal</div><div class="sb-row"><div class="sb-val wa">12</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:60%;background:var(--amber)"></div></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="dc-title">Global Macro Impact</div>
+          <div class="dr"><span class="dk">MSCI</span><span class="dv up">Aman — HSC rendah, tetap di EM index</span></div>
+          <div class="dr"><span class="dk">Moody's/Fitch</span><span class="dv wa">Negative outlook → institutional add terbatas</span></div>
+          <div class="dr"><span class="dk">Fed Hold</span><span class="dv dn">USD kuat → rupiah lemah → NIM tertekan</span></div>
+          <div class="dr"><span class="dk">BOJ Carry</span><span class="dv dn">Jika unwind → net foreign sell berlanjut</span></div>
+          <div class="dr"><span class="dk">Minyak $108</span><span class="dv dn">Inflasi → NPL debitur energi intensive</span></div>
+          <div class="dr"><span class="dk">Net relatif</span><span class="dv wa">Lebih baik dari peer EM — tapi headwinds ada</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-panel" id="bmri-k">
+      <div class="cat-list">
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-main">UTAMA</span>Dividen Rp44,47T resmi + rencana buyback jumbo — yield ~5–6%, salah satu tertinggi di perbankan. <span style="color:var(--muted)">Sumber: Ajaib.co.id, Mei 2026</span></div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div>Hari ini hanya -0.22% vs IHSG -2.86% = outperform 2.64% — institusi tidak panik jual. <span style="color:var(--muted)">Sumber: Stockbit 9 Mei 2026</span></div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div>PDB Q1 2026 +5.61% YoY → ekspansi kredit korporasi potensial, segmen inti BMRI. <span style="color:var(--muted)">Sumber: Trading Economics 6 Mei 2026</span></div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-alpha">ALPHA</span>Corporate Action aktif (badge C di Stockbit) — cek keterbukaan BEI untuk detail. Bisa buyback atau aksi lain yang supportif.</div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-global">MSCI SAFE</span>BMRI HSC sangat rendah (BUMN dengan publik holder besar) — tidak terancam removal MSCI. Justru potensial dapat re-weighting saat freeze dicabut Juni 2026.</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="bmri-sm">
+      <div class="sm-list">
+        <div class="sm-item"><div class="sm-dot sd-on"></div>Relative strength terkuat hari ini (-0.22%) di seluruh screener — sinyal institusi tidak distribusi</div>
+        <div class="sm-item"><div class="sm-dot sd-on"></div>Passive fund IDX30 + LQ45 wajib hold — natural floor dari fund manager</div>
+        <div class="sm-item"><div class="sm-dot sd-half"></div>Corporate Action aktif — pantau keterbukaan BEI real-time untuk detail buyback</div>
+        <div class="sm-item"><div class="sm-dot sd-half"></div>Net foreign flow: masih net sell secara aggregate, tapi BMRI relatif defensif</div>
+        <div class="sm-item"><div class="sm-dot sd-half"></div>Dividen yield 5–6% → income fund domestik wajib consider di level ini</div>
+      </div>
+      <div style="margin-top:10px"><div class="dc-title" style="margin-bottom:6px">Sinyal Aktif (7/8)</div>
+      <div class="sig-bar"><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-off"></div></div></div>
+    </div>
+    <div class="tab-panel" id="bmri-r">
+      <div class="cat-list">
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div><span class="cbadge cb-risk">SOVEREIGN</span>Moody's + Fitch negative outlook → institutional mandates tidak bisa tambah Indonesia. Jika downgrade ke junk: massive outflow. <span style="color:var(--muted)">Sumber: IFR Reuters 4 Mar 2026</span></div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Rupiah Rp17.300+ → biaya impor naik → debitur korporasi (segmen utama BMRI) tertekan → NPL potensial naik</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Fed hold sepanjang 2026 → dollar kuat → EM outflow berlanjut, termasuk IDX</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>BOJ hike lagi jika carry trade unwind → tambahan net sell asing di seluruh EM</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Ketidakpastian politik domestik: pergantian menteri keuangan Sep 2025, ketidakpastian Danantara</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="bmri-s">
+      <div class="setup-grid">
+        <div><div class="sg-k">Harga Saat Ini</div><div class="sg-v dn">Rp 4.630</div><div class="sg-note">Stockbit · 9 Mei 2026</div></div>
+        <div><div class="sg-k">Entry Ideal</div><div class="sg-v sg-entry">Rp 4.350–4.500</div><div class="sg-note">Tunggu IHSG 2 sesi reversal</div></div>
+        <div><div class="sg-k">Stop Loss</div><div class="sg-v sg-sl">Rp 4.100 (-5%)</div></div>
+        <div><div class="sg-k">TP1</div><div class="sg-v sg-tp">Rp 5.200 (+16%)</div></div>
+        <div><div class="sg-k">TP2</div><div class="sg-v sg-tp">Rp 5.800 (+29%)</div></div>
+        <div><div class="sg-k">R:R</div><div class="sg-v sg-rr">1:3.2</div><div class="rr-track"><div class="rr-fill" style="width:78%;background:var(--green)"></div></div></div>
+        <div><div class="sg-k">Timeframe</div><div class="sg-note">1–3 Bulan</div></div>
+        <div><div class="sg-k">Max Size</div><div class="sg-note">25% cash aktif</div></div>
+      </div>
+      <div class="verdict">
+        <span class="v-lbl">Verdict</span>
+        <span class="v-txt">Pick terbaik di kondisi pasar saat ini. Paling defensif hari ini (-0.22%), dividen jumbo + buyback, fundamental grade A. Risiko utama adalah sovereign (Moody's/Fitch negative). Entry di Rp 4.350–4.500 lebih ideal — tunggu IHSG stabil dulu. Cocok untuk posisi medium-term dengan sizing penuh.</span>
+        <span class="risk-tag rt-l">RISK 3/10</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── BBRI ─── -->
+<div class="sc t1s">
+  <div class="sc-head" onclick="tog('bbri')">
+    <div class="sch-left">
+      <div class="sch-ticker c1">BBRI</div>
+      <div class="sch-meta">
+        <div class="sch-name">PT Bank Rakyat Indonesia (Persero) Tbk · UMKM Perbankan</div>
+        <div class="sch-tags">
+          <span class="itag it-stay">IDX30 ✓</span><span class="itag it-stay">LQ45 ✓</span>
+          <span class="itag it-stay">Corp. Action Aktif</span><span class="itag it-stay">MSCI EM ✓</span>
+        </div>
+      </div>
+    </div>
+    <div class="sch-right">
+      <div class="price-b">
+        <div class="pb-src">Stockbit · 9 Mei 2026</div>
+        <div class="pb-val dn">Rp 3.260</div>
+        <div class="pb-chg dn">▼ -50 (-1.51%)</div>
+      </div>
+      <div class="score-ring sr-b"><div class="sr-num">70</div><div class="sr-lbl">Score</div></div>
+      <span class="rp rp-b">BUY on Dip</span>
+      <span class="chev" id="c-bbri">▾</span>
+    </div>
+  </div>
+  <div class="sc-body" id="b-bbri">
+    <div class="tab-nav">
+      <button class="tn-btn act" onclick="sw('bbri','f',this)">Fundamental</button>
+      <button class="tn-btn" onclick="sw('bbri','k',this)">Katalis</button>
+      <button class="tn-btn" onclick="sw('bbri','r',this)">Risiko</button>
+      <button class="tn-btn" onclick="sw('bbri','s',this)">Setup</button>
+    </div>
+    <div class="tab-panel act" id="bbri-f">
+      <div class="dg">
+        <div>
+          <div class="dc-title">Fundamental</div>
+          <div class="dr"><span class="dk">Harga (9 Mei Close)</span><span class="dv dn">Rp 3.260 | Stockbit</span></div>
+          <div class="dr"><span class="dk">PE (est.)</span><span class="dv">~10x — Di bawah fair value</span></div>
+          <div class="dr"><span class="dk">ROE</span><span class="dv up">>17% — Solid</span></div>
+          <div class="dr"><span class="dk">Dividend Yield</span><span class="dv up">~5–6% — Menarik untuk hold</span></div>
+          <div class="dr"><span class="dk">Core Business</span><span class="dv">UMKM — terbesar di RI</span></div>
+          <div class="dr"><span class="dk">Bull Target 12M</span><span class="dv up">Rp 4.500 (+38% dari current)</span></div>
+          <div class="dr"><span class="dk">Bear Target 12M</span><span class="dv dn">Rp 2.700 jika rating junk</span></div>
+          <div class="dr"><span class="dk">Skor Total</span><span class="dv wa">70/100 — Grade B</span></div>
+        </div>
+        <div>
+          <div class="dc-title">Global Macro Impact</div>
+          <div class="dr"><span class="dk">MSCI</span><span class="dv up">Aman — HSC rendah</span></div>
+          <div class="dr"><span class="dk">Rupiah Lemah</span><span class="dv dn">NPL UMKM berpotensi naik</span></div>
+          <div class="dr"><span class="dk">Pinjol NPL >5%</span><span class="dv dn">Contagion risk ke segmen mikro</span></div>
+          <div class="dr"><span class="dk">Minyak Tinggi</span><span class="dv dn">Cost debitur sektor riil naik</span></div>
+          <div class="dr"><span class="dk">PDB +5.61%</span><span class="dv up">Kredit UMKM bisa ekspansi</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-panel" id="bbri-k">
+      <div class="cat-list">
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-main">DIVIDEN</span>Ekspektasi dividen besar setara BMRI — BUMN perbankan tren distribusi ke negara. <span style="color:var(--muted)">Konteks: BMRI Rp44.47T (Ajaib Mei 2026)</span></div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div>Program MBG (Makanan Bergizi Gratis) Prabowo → multiplier kredit UMKM — core business BBRI langsung benefit</div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div>Corporate Action aktif (badge C Stockbit) — cek keterbukaan BEI untuk detail terbaru</div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-alpha">VALUATION</span>Harga saat ini ~Rp3.260 → 20–25% di bawah estimasi fair value DCF. Koreksi hari ini membuka entry point lebih baik dari kemarin.</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="bbri-r">
+      <div class="cat-list">
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div><span class="cbadge cb-risk">NPL</span>Pinjol NPL >5% → contagion ke UMKM. Kenaikan BBM non-subsidi tekan margin debitur kecil</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Rupiah Rp17.300 → asset quality bank tertekan. Jika Rp18.000+ → sektor perbankan terdampak signifikan (Phintraco, 7 Mei 2026)</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>MSCI freeze + Moody's/Fitch negative → institutional demand terbatas meski fundamental kuat</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="bbri-s">
+      <div class="setup-grid">
+        <div><div class="sg-k">Harga Saat Ini</div><div class="sg-v dn">Rp 3.260</div><div class="sg-note">Stockbit 9 Mei 2026</div></div>
+        <div><div class="sg-k">Entry Ideal</div><div class="sg-v sg-entry">Rp 3.100–3.200</div><div class="sg-note">Tunggu IHSG reversal</div></div>
+        <div><div class="sg-k">Stop Loss</div><div class="sg-v sg-sl">Rp 2.980 (-6%)</div></div>
+        <div><div class="sg-k">TP1</div><div class="sg-v sg-tp">Rp 3.700 (+19%)</div></div>
+        <div><div class="sg-k">TP2</div><div class="sg-v sg-tp">Rp 4.300 (+38%)</div></div>
+        <div><div class="sg-k">R:R</div><div class="sg-v sg-rr">1:3</div><div class="rr-track"><div class="rr-fill" style="width:75%;background:var(--green)"></div></div></div>
+      </div>
+      <div class="verdict"><span class="v-lbl">Verdict</span><span class="v-txt">Fundamental terkuat di perbankan RI. Koreksi hari ini buka entry lebih murah. Tunggu 2 sesi IHSG reversal sebelum entry. Sizing penuh hanya jika IHSG tembus ke atas 7.100+ dengan volume.</span><span class="risk-tag rt-l">RISK 4/10</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TIER 2 — SWING CATALYST
+════════════════════════════════════════════════ -->
+<div class="tier-div">
+  <span class="td-tag t2x">Tier 2</span>
+  <div class="td-line"></div>
+  <span class="td-info">Swing Catalyst · Baru Masuk Indeks · Target 15–40%</span>
+</div>
+
+<!-- ─── ADMR ─── -->
+<div class="sc t2s">
+  <div class="sc-head" onclick="tog('admr')">
+    <div class="sch-left">
+      <div class="sch-ticker c2">ADMR</div>
+      <div class="sch-meta">
+        <div class="sch-name">PT Alamtri Minerals Indonesia Tbk · Batu Bara Metalurgi (Adaro Group)</div>
+        <div class="sch-tags">
+          <span class="itag it-new">★ IDX30 BARU (4 Mei)</span>
+          <span class="itag it-stay">LQ45 ✓</span>
+          <span class="itag it-stay">USD Revenue — FX Hedge Alami</span>
+        </div>
+      </div>
+    </div>
+    <div class="sch-right">
+      <div class="price-b">
+        <div class="pb-src">Stockbit · 9 Mei 2026</div>
+        <div class="pb-val dn">Rp 1.825</div>
+        <div class="pb-chg dn">▼ -45 (-2.41%) — Lebih baik dari IHSG</div>
+      </div>
+      <div class="score-ring sr-b"><div class="sr-num">77</div><div class="sr-lbl">Score</div></div>
+      <span class="rp rp-sb">STRONG BUY</span>
+      <span class="chev" id="c-admr">▾</span>
+    </div>
+  </div>
+  <div class="sc-body" id="b-admr">
+    <div class="tab-nav">
+      <button class="tn-btn act" onclick="sw('admr','f',this)">Fundamental</button>
+      <button class="tn-btn" onclick="sw('admr','k',this)">Katalis</button>
+      <button class="tn-btn" onclick="sw('admr','sm',this)">Smart Money</button>
+      <button class="tn-btn" onclick="sw('admr','r',this)">Risiko</button>
+      <button class="tn-btn" onclick="sw('admr','s',this)">Setup</button>
+    </div>
+    <div class="tab-panel act" id="admr-f">
+      <div class="dg">
+        <div>
+          <div class="dc-title">Fundamental</div>
+          <div class="dr"><span class="dk">Harga (9 Mei Close)</span><span class="dv dn">Rp 1.825 | Stockbit</span></div>
+          <div class="dr"><span class="dk">Bisnis</span><span class="dv">Batu bara metalurgi (coking coal)</span></div>
+          <div class="dr"><span class="dk">Segmen</span><span class="dv">5 konsesi PKP2B, Kaltim & Kalteng</span></div>
+          <div class="dr"><span class="dk">Revenue Currency</span><span class="dv up">USD — natural hedge rupiah lemah</span></div>
+          <div class="dr"><span class="dk">Parent Group</span><span class="dv">Adaro — solid governance, ADRO di LQ45</span></div>
+          <div class="dr"><span class="dk">Relative Strength</span><span class="dv up">-2.41% vs IHSG -2.86% → lebih kuat</span></div>
+          <div class="dr"><span class="dk">Bull Target</span><span class="dv up">Rp 2.200–2.500 (+35%)</span></div>
+          <div class="dr"><span class="dk">Skor Total</span><span class="dv up">77/100 — Tertinggi di screener</span></div>
+        </div>
+        <div>
+          <div class="dc-title">Global Macro Impact — ADMR Spesifik</div>
+          <div class="dr"><span class="dk">USD Revenue</span><span class="dv up">Rupiah lemah → pendapatan IDR naik</span></div>
+          <div class="dr"><span class="dk">Minyak $108</span><span class="dv up">Coking coal harga stabil/naik</span></div>
+          <div class="dr"><span class="dk">MSCI</span><span class="dv wa">HSC rendah — aman dari removal</span></div>
+          <div class="dr"><span class="dk">Fed Hold</span><span class="dv up">Komoditi USD-priced benefit</span></div>
+          <div class="dr"><span class="dk">BOJ Carry</span><span class="dv dn">Jika unwind → net sell asing</span></div>
+          <div class="dr"><span class="dk">BEI Rebalancing</span><span class="dv up">IDX30 passive inflow — masih berjalan</span></div>
+        </div>
+        <div>
+          <div class="dc-title">Skor Breakdown (77/100)</div>
+          <div class="sb-grid">
+            <div class="sb-item"><div class="sb-ttl">Fundamental</div><div class="sb-row"><div class="sb-val wa">15</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:75%;background:var(--amber)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Katalis</div><div class="sb-row"><div class="sb-val up">18</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:90%;background:var(--green)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Smart Money</div><div class="sb-row"><div class="sb-val up">16</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:80%;background:var(--green)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Index/Flow</div><div class="sb-row"><div class="sb-val up">16</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:80%;background:var(--green)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Teknikal</div><div class="sb-row"><div class="sb-val wa">12</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:60%;background:var(--amber)"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-panel" id="admr-k">
+      <div class="cat-list">
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-main">IDX30 BARU</span>Masuk IDX30 efektif 4 Mei 2026 — passive inflow dari ETF dan reksa dana indeks IDX30 masih berlangsung. Ini satu-satunya passive inflow global aktif saat MSCI+FTSE beku. <span style="color:var(--muted)">Sumber: BEI via Bisnis.com 24 Apr 2026</span></div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-alpha">ALPHA — FX HEDGE</span>Revenue ADMR dalam USD. Rupiah di 17.300 = pendapatan IDR secara otomatis naik ~15% YTD. Fed hold + BOJ hawkish = USD tetap kuat = ADMR double benefit.</div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div>Coking coal (batu bara metalurgi) berbeda dari thermal coal — permintaan dari industri baja global, tidak terpengaruh langsung transisi energi renewables</div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div>Relative strength terbaik di Tier 2: -2.41% vs IHSG -2.86% — sinyal institusi masih hold posisi kuat</div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-global">MSCI SAFE</span>Jika MSCI mencabut freeze di Juni 2026 → ADMR jadi kandidat re-weighting karena sudah masuk IDX30. Double catalyst potensi.</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="admr-sm">
+      <div class="sm-list">
+        <div class="sm-item"><div class="sm-dot sd-on"></div>IDX30 ETF rebalancing wajib adjust bobot per 4 Mei — forced passive buy masih dalam proses</div>
+        <div class="sm-item"><div class="sm-dot sd-on"></div>Relative strength hari ini positif vs IHSG — institusi tidak distribusi</div>
+        <div class="sm-item"><div class="sm-dot sd-on"></div>USD revenue = hedge alami terhadap carry trade unwind (jika asing jual, kurs IDR turun → revenue ADMR naik)</div>
+        <div class="sm-item"><div class="sm-dot sd-half"></div>Volume hari ini: pantau apakah ada pembelian besar di tengah market red → konfirmasi akumulasi</div>
+        <div class="sm-item"><div class="sm-dot sd-half"></div>Broker asing: cek net daily — apakah asing masih akumulasi atau sudah flat</div>
+      </div>
+      <div style="margin-top:10px"><div class="dc-title" style="margin-bottom:6px">Sinyal Aktif (6/8)</div>
+      <div class="sig-bar"><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-on"></div><div class="sig-seg sig-off"></div><div class="sig-seg sig-off"></div></div></div>
+    </div>
+    <div class="tab-panel" id="admr-r">
+      <div class="cat-list">
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div><span class="cbadge cb-risk">MARKET</span>IHSG -2.86% hari ini → tunda semua entry. Konfirmasi reversal IHSG minimal 2 sesi berturut dulu</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Passive inflow IDX30 mungkin sudah sebagian di-price-in — cek apakah harga sudah spike dari sebelum 4 Mei</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Demand batu bara metalurgi tergantung industri baja China — jika China slowdown, order turun</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>BOJ hawkish → carry trade unwind → asing bisa net sell meski fundamental ADMR bagus</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="admr-s">
+      <div class="setup-grid">
+        <div><div class="sg-k">Harga Saat Ini</div><div class="sg-v dn">Rp 1.825</div><div class="sg-note">Stockbit 9 Mei 2026</div></div>
+        <div><div class="sg-k">Entry Ideal</div><div class="sg-v sg-entry">Rp 1.750–1.850</div><div class="sg-note">Setelah IHSG reversal 2 sesi</div></div>
+        <div><div class="sg-k">Stop Loss</div><div class="sg-v sg-sl">Rp 1.660 (-8%)</div></div>
+        <div><div class="sg-k">TP1</div><div class="sg-v sg-tp">Rp 2.100 (+15%)</div></div>
+        <div><div class="sg-k">TP2</div><div class="sg-v sg-tp">Rp 2.400 (+31%)</div></div>
+        <div><div class="sg-k">R:R</div><div class="sg-v sg-rr">1:3</div><div class="rr-track"><div class="rr-fill" style="width:75%;background:var(--green)"></div></div></div>
+        <div><div class="sg-k">Thesis</div><div class="sg-note">IDX30 Inflow + USD Hedge</div></div>
+        <div><div class="sg-k">Horizon</div><div class="sg-note">2–6 Minggu</div></div>
+      </div>
+      <div class="verdict"><span class="v-lbl">Verdict</span><span class="v-txt"><strong>Best play keseluruhan (Score 77/100).</strong> ADMR kombinasi: IDX30 passive inflow + USD revenue hedge + coking coal defensif. Satu-satunya kategori yang dapat keuntungan dari rupiah lemah + minyak tinggi. Entry di area 1.750–1.850 setelah IHSG reversal. Window passive inflow masih ada tapi semakin sempit — target entry sebelum akhir Mei.</span><span class="risk-tag rt-m">RISK 5/10</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── ESSA ─── -->
+<div class="sc t2s">
+  <div class="sc-head" onclick="tog('essa')">
+    <div class="sch-left">
+      <div class="sch-ticker c2">ESSA</div>
+      <div class="sch-meta">
+        <div class="sch-name">PT ESSA Industries Indonesia Tbk · Gas Alam → Amonia → Petrokimia</div>
+        <div class="sch-tags">
+          <span class="itag it-new">★ LQ45 BARU (4 Mei)</span>
+          <span class="itag it-stay">Beneficiary Minyak Tinggi</span>
+          <span class="itag it-stay">Amonia — Pupuk Global</span>
+        </div>
+      </div>
+    </div>
+    <div class="sch-right">
+      <div class="price-b">
+        <div class="pb-src">Stockbit · 9 Mei 2026</div>
+        <div class="pb-val up">Rp 835</div>
+        <div class="pb-chg up">▲ +10 (+1.21%) — SATU-SATUNYA HIJAU</div>
+      </div>
+      <div class="score-ring sr-b"><div class="sr-num">73</div><div class="sr-lbl">Score</div></div>
+      <span class="rp rp-sb">STRONG BUY</span>
+      <span class="chev" id="c-essa">▾</span>
+    </div>
+  </div>
+  <div class="sc-body" id="b-essa">
+    <div class="tab-nav">
+      <button class="tn-btn act" onclick="sw('essa','f',this)">Fundamental</button>
+      <button class="tn-btn" onclick="sw('essa','k',this)">Katalis</button>
+      <button class="tn-btn" onclick="sw('essa','r',this)">Risiko</button>
+      <button class="tn-btn" onclick="sw('essa','s',this)">Setup</button>
+    </div>
+    <div class="tab-panel act" id="essa-f">
+      <div class="dg">
+        <div>
+          <div class="dc-title">Fundamental + Global Macro Link</div>
+          <div class="dr"><span class="dk">Harga (9 Mei Close)</span><span class="dv up">Rp 835 (+1.21%) ← HIJAU</span></div>
+          <div class="dr"><span class="dk">Bisnis Chain</span><span class="dv">Gas alam → Amonia → Fertilizer</span></div>
+          <div class="dr"><span class="dk">Revenue Driver</span><span class="dv">Harga gas + amonia global</span></div>
+          <div class="dr"><span class="dk">US-Iran Link</span><span class="dv up">Minyak tinggi → gas tinggi → ESSA untung</span></div>
+          <div class="dr"><span class="dk">Amonia Global</span><span class="dv up">Pupuk — permintaan struktural global</span></div>
+          <div class="dr"><span class="dk">Relative Strength</span><span class="dv up">+1.21% saat IHSG -2.86% = outperform 4%!</span></div>
+          <div class="dr"><span class="dk">Bull Target</span><span class="dv up">Rp 1.000–1.100 (+25–32%)</span></div>
+          <div class="dr"><span class="dk">Score</span><span class="dv wa">73/100 — Grade B+</span></div>
+        </div>
+        <div>
+          <div class="dc-title">Skor Breakdown (73/100)</div>
+          <div class="sb-grid">
+            <div class="sb-item"><div class="sb-ttl">Fundamental</div><div class="sb-row"><div class="sb-val wa">14</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:70%;background:var(--amber)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Katalis</div><div class="sb-row"><div class="sb-val up">16</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:80%;background:var(--green)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Smart Money</div><div class="sb-row"><div class="sb-val up">17</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:85%;background:var(--green)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Index/Flow</div><div class="sb-row"><div class="sb-val wa">13</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:65%;background:var(--amber)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Teknikal</div><div class="sb-row"><div class="sb-val wa">13</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:65%;background:var(--amber)"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-panel" id="essa-k">
+      <div class="cat-list">
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-main">LQ45 BARU</span>Masuk LQ45 efektif 4 Mei 2026 — passive inflow dari reksa dana LQ45. <span style="color:var(--muted)">Sumber: BEI via SWA 24 Apr 2026</span></div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-alpha">SINYAL KRITIS</span>+1.21% saat pasar merah besar -2.86% → ini anomali relative strength yang sangat signifikan. Kemungkinan besar ada akumulasi institusional yang tidak ingin ketahuan retail. Pantau volume.</div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div><span class="cbadge cb-global">GEOPOLITIK</span>US-Iran War + Hormuz blockade → minyak $108 → gas alam ikut tinggi → amonia margin ESSA naik langsung. ESSA adalah beneficiary langsung konflik Timur Tengah.</div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div>Amonia = bahan baku pupuk. Dengan inflasi pangan global dan harga pupuk tinggi, permintaan amonia tetap kuat secara struktural</div></div>
+        <div class="cat-item"><span class="ci-icon">▸</span><div>"ESSA dipantau karena katalis industri energi dan kimia." <span style="color:var(--muted)">Sumber: Kontan via TradingView Apr 2026</span></div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="essa-r">
+      <div class="cat-list">
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div><span class="cbadge cb-risk">TRIGGER</span>Jika ceasefire AS-Iran deal terjadi → minyak bisa drop 20%+ → gas ikut turun → ESSA margin tertekan langsung</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Likuiditas saham Rp835 — perlu dikonfirmasi untuk size besar. Bid-ask spread bisa melebar di kondisi volatil</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Single commodity exposure — hanya gas/amonia. Diversifikasi sangat terbatas vs ADMR atau ANTM</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="essa-s">
+      <div class="setup-grid">
+        <div><div class="sg-k">Harga Saat Ini</div><div class="sg-v up">Rp 835</div><div class="sg-note">Stockbit 9 Mei 2026 — HIJAU</div></div>
+        <div><div class="sg-k">Entry Zone</div><div class="sg-v sg-entry">Rp 800–850</div><div class="sg-note">Konfirmasi volume dulu</div></div>
+        <div><div class="sg-k">Stop Loss</div><div class="sg-v sg-sl">Rp 750 (-8%)</div></div>
+        <div><div class="sg-k">TP1</div><div class="sg-v sg-tp">Rp 980 (+17%)</div></div>
+        <div><div class="sg-k">TP2</div><div class="sg-v sg-tp">Rp 1.100 (+32%)</div></div>
+        <div><div class="sg-k">R:R</div><div class="sg-v sg-rr">1:2.8</div><div class="rr-track"><div class="rr-fill" style="width:70%;background:var(--green)"></div></div></div>
+        <div><div class="sg-k">Trigger</div><div class="sg-note">Volume besok konfirmasi</div></div>
+      </div>
+      <div class="verdict"><span class="v-lbl">Verdict</span><span class="v-txt"><strong>Watch #1 — relative strength anomali.</strong> Satu-satunya hijau di hari market -2.86%. ESSA uniquely positioned: LQ45 baru + direct beneficiary US-Iran/minyak tinggi + amonia demand struktural. Risiko utama: ceasefire deal. Entry bisa dipertimbangkan tapi konfirmasi volume besok dulu. Jika IHSG bounced + ESSA naik lagi = entry kuat.</span><span class="risk-tag rt-m">RISK 5/10</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TIER 3 — VALUE + EMAS
+════════════════════════════════════════════════ -->
+<div class="tier-div">
+  <span class="td-tag t3x">Tier 3</span>
+  <div class="td-line"></div>
+  <span class="td-info">Selective Speculative · Proxy Emas · LQ45 Baru · Size Kecil</span>
+</div>
+
+<!-- ─── ANTM ─── -->
+<div class="sc t3s">
+  <div class="sc-head" onclick="tog('antm')">
+    <div class="sch-left">
+      <div class="sch-ticker c3">ANTM</div>
+      <div class="sch-meta">
+        <div class="sch-name">PT Aneka Tambang (Persero) Tbk · Emas + Nikel + Bauksit</div>
+        <div class="sch-tags">
+          <span class="itag it-stay">LQ45 ✓</span><span class="itag it-stay">IDX80 ✓</span>
+          <span class="itag it-stay">Proxy Emas ATH</span><span class="itag it-stay">BUMN</span>
+        </div>
+      </div>
+    </div>
+    <div class="sch-right">
+      <div class="price-b">
+        <div class="pb-src">Stockbit · 9 Mei 2026</div>
+        <div class="pb-val dn">Rp 3.630</div>
+        <div class="pb-chg dn">▼ -250 (-6.44%) — Oversold Potensial</div>
+      </div>
+      <div class="score-ring sr-b"><div class="sr-num">68</div><div class="sr-lbl">Score</div></div>
+      <span class="rp rp-b">BUY on Dip</span>
+      <span class="chev" id="c-antm">▾</span>
+    </div>
+  </div>
+  <div class="sc-body" id="b-antm">
+    <div class="tab-nav">
+      <button class="tn-btn act" onclick="sw('antm','f',this)">Fundamental</button>
+      <button class="tn-btn" onclick="sw('antm','r',this)">Risiko</button>
+      <button class="tn-btn" onclick="sw('antm','s',this)">Setup</button>
+    </div>
+    <div class="tab-panel act" id="antm-f">
+      <div class="dg">
+        <div>
+          <div class="dc-title">Fundamental + Macro Link</div>
+          <div class="dr"><span class="dk">Harga (9 Mei)</span><span class="dv dn">Rp 3.630 (-6.44%) | Stockbit</span></div>
+          <div class="dr"><span class="dk">Emas Global</span><span class="dv up">ATH 2026 — driven geopolitik</span></div>
+          <div class="dr"><span class="dk">Rupiah 17.300</span><span class="dv up">Harga emas IDR naik otomatis</span></div>
+          <div class="dr"><span class="dk">US-Iran War</span><span class="dv up">Safe haven → emas terus naik</span></div>
+          <div class="dr"><span class="dk">Nikel Oversupply</span><span class="dv dn">Segmen nikel underperform</span></div>
+          <div class="dr"><span class="dk">Bull Target 12M</span><span class="dv up">Rp 5.000+ (emas ATH berlanjut)</span></div>
+          <div class="dr"><span class="dk">Bear Target</span><span class="dv dn">Rp 2.800 (ceasefire + Fed pivot)</span></div>
+          <div class="dr"><span class="dk">Samuel Sekuritas</span><span class="dv up">Top Buys official | Bisnis.com 8 Mei 2026</span></div>
+        </div>
+        <div>
+          <div class="dc-title">Skor (68/100)</div>
+          <div class="sb-grid">
+            <div class="sb-item"><div class="sb-ttl">Fundamental</div><div class="sb-row"><div class="sb-val wa">15</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:75%;background:var(--amber)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Katalis</div><div class="sb-row"><div class="sb-val up">16</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:80%;background:var(--green)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Smart Money</div><div class="sb-row"><div class="sb-val wa">11</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:55%;background:var(--amber)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Teknikal</div><div class="sb-row"><div class="sb-val wa">12</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:60%;background:var(--amber)"></div></div></div>
+            <div class="sb-item"><div class="sb-ttl">Index/Flow</div><div class="sb-row"><div class="sb-val wa">14</div><div class="sb-mx">/20</div></div><div class="sb-bar"><div class="sb-fill" style="width:70%;background:var(--amber)"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-panel" id="antm-r">
+      <div class="cat-list">
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>-6.44% hari ini — dikonfirmasi tapi mungkin oversold. Jangan catch falling knife — tunggu konfirmasi</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Nikel oversupply global → segmen nikel ANTM terus drag ke bawah meski emas naik</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Jika ceasefire AS-Iran deal: emas bisa koreksi 15–20% → ANTM ikut turun tajam</div></div>
+        <div class="cat-item"><span class="ci-icon" style="color:var(--red)">⚠</span><div>Fed hawkish surprise → dollar lebih kuat → emas tertekan (inverse relationship)</div></div>
+      </div>
+    </div>
+    <div class="tab-panel" id="antm-s">
+      <div class="setup-grid">
+        <div><div class="sg-k">Harga Saat Ini</div><div class="sg-v dn">Rp 3.630</div><div class="sg-note">Stockbit 9 Mei 2026</div></div>
+        <div><div class="sg-k">Entry Zone</div><div class="sg-v sg-entry">Rp 3.300–3.500</div><div class="sg-note">Tunggu reversal IHSG</div></div>
+        <div><div class="sg-k">Stop Loss</div><div class="sg-v sg-sl">Rp 3.050 (-8%)</div></div>
+        <div><div class="sg-k">TP1</div><div class="sg-v sg-tp">Rp 4.200 (+20%)</div></div>
+        <div><div class="sg-k">TP2</div><div class="sg-v sg-tp">Rp 5.000 (+43%)</div></div>
+        <div><div class="sg-k">R:R</div><div class="sg-v sg-rr">1:2.8</div><div class="rr-track"><div class="rr-fill" style="width:70%;background:var(--green)"></div></div></div>
+      </div>
+      <div class="verdict"><span class="v-lbl">Verdict</span><span class="v-txt">Proxy emas IDX terbaik. Koreksi -6.44% mungkin oversold — emas global masih ATH. Tapi tunggu reversal IHSG dan konfirmasi harga emas stabil sebelum entry. Risiko binary dari ceasefire deal perlu diwaspadai ketat.</span><span class="risk-tag rt-m">RISK 5/10</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TIER 4 — INDEX ARBITRAGE IDX80
+════════════════════════════════════════════════ -->
+<div class="tier-div">
+  <span class="td-tag t4x">Tier 4</span>
+  <div class="td-line"></div>
+  <span class="td-info">Index Arbitrage · IDX80 Baru · Passive Inflow Domestik · Target 15–25%</span>
+</div>
+
+<!-- ─── TPIA ─── -->
+<div class="sc t4s">
+  <div class="sc-head" onclick="tog('tpia')">
+    <div class="sch-left">
+      <div class="sch-ticker c4">TPIA</div>
+      <div class="sch-meta">
+        <div class="sch-name">PT Chandra Asri Pacific Tbk · Petrokimia Terintegrasi Terbesar RI</div>
+        <div class="sch-tags">
+          <span class="itag it-new">★ IDX80 BARU</span>
+          <span class="itag it-new">★ IDXESGL BARU</span>
+          <span class="itag it-stay">Corp. Action Aktif</span>
+          <span class="itag it-stay">Petrokimia Moat Kuat</span>
+        </div>
+      </div>
+    </div>
+    <div class="sch-right">
+      <div class="price-b">
+        <div class="pb-src">Stockbit · 9 Mei 2026</div>
+        <div class="pb-val dn">Rp 5.500</div>
+        <div class="pb-chg dn">▼ -225 (-3.93%)</div>
+      </div>
+      <div class="score-ring sr-b"><div class="sr-num">67</div><div class="sr-lbl">Score</div></div>
+      <span class="rp rp-b">BUY on Dip</span>
+      <span class="chev" id="c-tpia">▾</span>
+    </div>
+  </div>
+  <div class="sc-body" id="b-tpia">
+    <div class="tab-nav">
+      <button class="tn-btn act" onclick="sw('tpia','f',this)">Overview</button>
+      <button class="tn-btn" onclick="sw('tpia','s',this)">Setup</button>
+    </div>
+    <div class="tab-panel act" id="tpia-f">
+      <div class="dg">
+        <div>
+          <div class="dc-title">Overview</div>
+          <div class="dr"><span class="dk">Harga (9 Mei)</span><span class="dv dn">Rp 5.500 (-3.93%) | Stockbit</span></div>
+          <div class="dr"><span class="dk">Bisnis</span><span class="dv">Naphtha cracker — olefin, polimer</span></div>
+          <div class="dr"><span class="dk">IDX80</span><span class="dv up">Baru (4 Mei) — passive inflow</span></div>
+          <div class="dr"><span class="dk">IDXESGL</span><span class="dv up">Baru — ESG investor angle</span></div>
+          <div class="dr"><span class="dk">Corp. Action</span><span class="dv up">Aktif (badge C) — cek BEI</span></div>
+          <div class="dr"><span class="dk">Minyak $108</span><span class="dv wa">Naphtha cost naik → margin compressed</span></div>
+          <div class="dr"><span class="dk">Bull Target</span><span class="dv up">Rp 6.500–7.000 (+25%)</span></div>
+          <div class="dr"><span class="dk">Score</span><span class="dv wa">67/100 — Grade B-</span></div>
+        </div>
+        <div>
+          <div class="dc-title">Macro Impact</div>
+          <div class="dr"><span class="dk">MSCI ESG</span><span class="dv up">IDXESGL = akses investor ESG global</span></div>
+          <div class="dr"><span class="dk">Minyak Tinggi</span><span class="dv dn">Naphtha cost tinggi → spread tertekan</span></div>
+          <div class="dr"><span class="dk">IDX80 Passive</span><span class="dv up">Reksa dana IDX80 wajib beli</span></div>
+          <div class="dr"><span class="dk">Corp. Action</span><span class="dv up">Potensi katalis tambahan — cek BEI</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-panel" id="tpia-s">
+      <div class="setup-grid">
+        <div><div class="sg-k">Harga Saat Ini</div><div class="sg-v dn">Rp 5.500</div><div class="sg-note">Stockbit 9 Mei 2026</div></div>
+        <div><div class="sg-k">Entry Zone</div><div class="sg-v sg-entry">Rp 5.100–5.300</div><div class="sg-note">Setelah market stabil</div></div>
+        <div><div class="sg-k">Stop Loss</div><div class="sg-v sg-sl">Rp 4.800 (-7%)</div></div>
+        <div><div class="sg-k">TP1</div><div class="sg-v sg-tp">Rp 6.200 (+17%)</div></div>
+        <div><div class="sg-k">TP2</div><div class="sg-v sg-tp">Rp 7.000 (+32%)</div></div>
+        <div><div class="sg-k">R:R</div><div class="sg-v sg-rr">1:2.8</div><div class="rr-track"><div class="rr-fill" style="width:70%;background:var(--green)"></div></div></div>
+      </div>
+      <div class="verdict"><span class="v-lbl">Verdict</span><span class="v-txt">Dual passive inflow (IDX80+IDXESGL) + Corp Action + petrokimia moat kuat. Risiko: minyak $108 tekan naphtha margin. Cek corporate action di BEI sebelum entry. Entry di 5.100–5.300 lebih menarik dari level ini.</span><span class="risk-tag rt-m">RISK 5/10</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TIER 5 — SPEC DESK
+════════════════════════════════════════════════ -->
+<div class="tier-div">
+  <span class="td-tag t5x">Tier 5</span>
+  <div class="td-line"></div>
+  <span class="td-info">Intraday Spec — SUSPENDED HARI INI | IHSG -2.86% | No Trade</span>
+</div>
+
+<div class="sc t5s">
+  <div class="sc-head" onclick="tog('brpt')">
+    <div class="sch-left">
+      <div class="sch-ticker c5">BRPT</div>
+      <div class="sch-meta">
+        <div class="sch-name">PT Barito Pacific Tbk · Petrokimia + Energi Terbarukan (Prajogo Group)</div>
+        <div class="sch-tags">
+          <span class="itag it-stay">IDX30 ✓</span><span class="itag it-stay">LQ45 ✓</span>
+          <span class="itag it-stay">Corp. Action</span><span class="itag it-stay" style="color:var(--red);border-color:rgba(240,56,80,0.25);background:var(--red2)">NO TRADE TODAY</span>
+        </div>
+      </div>
+    </div>
+    <div class="sch-right">
+      <div class="price-b">
+        <div class="pb-src">Stockbit · 9 Mei 2026</div>
+        <div class="pb-val dn">Rp 2.050</div>
+        <div class="pb-chg dn">▼ -110 (-5.09%) | Setelah +15% kemarin</div>
+      </div>
+      <div class="score-ring sr-d"><div class="sr-num">SKIP</div><div class="sr-lbl">Today</div></div>
+      <span class="rp rp-s">SUSPENDED</span>
+      <span class="chev" id="c-brpt">▾</span>
+    </div>
+  </div>
+  <div class="sc-body" id="b-brpt">
+    <div class="tab-nav">
+      <button class="tn-btn act" onclick="sw('brpt','f',this)">Status Hari Ini</button>
+      <button class="tn-btn" onclick="sw('brpt','s',this)">Watch Besok</button>
+    </div>
+    <div class="tab-panel act" id="brpt-f">
+      <div class="dg">
+        <div>
+          <div class="dc-title">SPEC Desk Pre-Entry Checklist</div>
+          <div class="dr"><span class="dk" style="color:var(--red)">✗ IHSG hijau?</span><span class="dv dn">GAGAL — -2.86%</span></div>
+          <div class="dr"><span class="dk" style="color:var(--red)">✗ Volume 3x avg?</span><span class="dv dn">Belum terkonfirmasi</span></div>
+          <div class="dr"><span class="dk" style="color:var(--red)">✗ Momentum positif?</span><span class="dv dn">GAGAL — -5.09%</span></div>
+          <div class="dr"><span class="dk" style="color:var(--red)">✗ Bukan setelah spike?</span><span class="dv dn">GAGAL — +15% kemarin</span></div>
+          <div style="margin-top:8px;color:var(--red);font-size:11px;font-weight:600">4/4 CHECKLIST GAGAL → HARD SKIP TOTAL</div>
+        </div>
+        <div>
+          <div class="dc-title">Context</div>
+          <div class="dr"><span class="dk">Harga Close</span><span class="dv dn">Rp 2.050 | Stockbit 9 Mei</span></div>
+          <div class="dr"><span class="dk">Kemarin</span><span class="dv wa">+15% (5 Mei) | Babelinsight</span></div>
+          <div class="dr"><span class="dk">Profit taking</span><span class="dv dn">-5.09% dikonfirmasi</span></div>
+          <div class="dr"><span class="dk">BOJ risk</span><span class="dv dn">Saham Prajogo group exposed ke asing</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-panel" id="brpt-s">
+      <div class="setup-grid">
+        <div><div class="sg-k">Watch Zone Besok</div><div class="sg-v sg-entry">Rp 1.950–2.050</div><div class="sg-note">Jika IHSG reversal + volume ok</div></div>
+        <div><div class="sg-k">Stop Loss (jika aktif)</div><div class="sg-v sg-sl">-5% KETAT</div></div>
+        <div><div class="sg-k">Target Intraday</div><div class="sg-v sg-tp">+7–10%</div></div>
+        <div><div class="sg-k">Hard Exit</div><div class="sg-v sg-sl">14.00 WIB</div></div>
+        <div><div class="sg-k">Max Size</div><div class="sg-v" style="color:var(--amber)">Rp 300.000</div></div>
+        <div><div class="sg-k">Syarat Entry</div><div class="sg-note">IHSG hijau + volume 3x + 09.00–10.30</div></div>
+      </div>
+      <div class="verdict"><span class="v-lbl">Verdict</span><span class="v-txt">Hard skip hari ini — semua syarat SPEC gagal. Besok pantau: jika IHSG bounced kembali ke 7.100+ dengan volume dan BRPT hold support Rp 1.950–2.050, ada setup intraday. Jangan paksakan entry jika satu syarat pun tidak terpenuhi.</span><span class="risk-tag rt-n">SKIP</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end shell -->
+
+<!-- ══ FOOTER ══ -->
+<div class="foot">
+  <div>
+    <div><strong>IDX Fund Screener</strong> — Institutional Research · Internal Only</div>
+    <div style="margin-top:3px;color:rgba(240,56,80,0.6)">⚠ Bukan rekomendasi publik. Selalu konfirmasi harga real-time sebelum eksekusi apapun.</div>
+  </div>
+  <div style="text-align:right">
+    <div>Harga: Stockbit 9 Mei 2026 (close) · Global Data: CNBC, Reuters, Bloomberg, Fed.gov, Trading Economics</div>
+    <div>MSCI: Jakarta Globe + Bloomberg 20 Apr 2026 · Rating: IFR Reuters + Indonesia Business Post</div>
+    <div>BOJ: CNBC 28 Apr 2026 · US-Iran: Wikipedia ceasefire + CNBC 8 Mei 2026 · BEI: Bisnis.com 24 Apr 2026</div>
+  </div>
+</div>
+
+<script>
+function tog(id){
+  const b=document.getElementById('b-'+id);
+  const c=document.getElementById('c-'+id);
+  if(!b)return;
+  const open=b.classList.contains('open');
+  b.classList.toggle('open',!open);
+  if(c)c.classList.toggle('o',!open);
+}
+function sw(cardId,tabId,btn){
+  const card=document.getElementById('b-'+cardId);
+  if(!card)return;
+  card.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('act'));
+  card.querySelectorAll('.tn-btn').forEach(b=>b.classList.remove('act'));
+  const panel=document.getElementById(cardId+'-'+tabId);
+  if(panel)panel.classList.add('act');
+  if(btn)btn.classList.add('act');
+}
+// Score counter animation
+document.querySelectorAll('.sr-num').forEach(el=>{
+  const val=parseInt(el.textContent);
+  if(isNaN(val))return;
+  let cur=0;const step=Math.ceil(val/25);
+  const t=setInterval(()=>{cur=Math.min(cur+step,val);el.textContent=cur;if(cur>=val)clearInterval(t);},35);
+});
+</script>
+</body>
+</html>
